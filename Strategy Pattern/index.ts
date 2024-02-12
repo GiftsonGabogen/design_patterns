@@ -1,29 +1,42 @@
-type IMessageType = () => void;
+type IMessageType = (message: string) => void;
 
 //algorithms
-const sendEmail: IMessageType = () => {
-  console.log("send email");
+const createEmail = (username: string) => {
+  return (message: string) => {
+    console.log(`my name is ${username}, ${message} from Email`);
+  };
 };
 
 //algorithms
-const sendSMS: IMessageType = () => {
-  console.log("send SMS");
+const createFBMessage = (username: string) => {
+  return (message: string) => {
+    console.log(`my name is ${username}, ${message} from FB Message`);
+  };
 };
 
 //algorithms
-const sendFBMessage: IMessageType = () => {
-  console.log("send FB Message");
+const createSMS = (username: string) => {
+  return (message: string) => {
+    console.log(`my name is ${username}, ${message} from SMS`);
+  };
 };
 
-//algorithms
-const sendFBAndEmailMessage: IMessageType = () => {
-  sendFBMessage();
-  sendEmail();
+const createSMSAndEmail = (username: string) => {
+  return (message: string) => {
+    const sendSMS = createSMS(username);
+    const sendEmail = createEmail(username);
+    sendSMS(message);
+    sendEmail(message);
+  };
 };
 
 //processor
-const messageProcessor = (messageType: IMessageType) => {
-  messageType();
+const messageProcessor = (message: string, messageStrategy: IMessageType) => {
+  messageStrategy(message);
 };
 
-messageProcessor(sendFBAndEmailMessage);
+const sendEmail = createEmail("ako");
+const sendEmailAndSMS = createSMSAndEmail("ako");
+
+messageProcessor("wassup", sendEmail);
+messageProcessor("wassup", sendEmailAndSMS);
